@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CURRENT=`pwd`
+HP=$HOME'/screencasts/'
+DEFAULT=$1
+if [ -z '$1' ]; then
+	DEFAULT=out
+fi
+
+NAME=$DEFAULT"_screencast"
+WINDOW_ID=`xwininfo | grep -Po "(?<=xwininfo: Window id: )(0x[\\w]+)"`
+
+recordmydesktop --no-sound --compress-cache --overwrite --windowid $WINDOW_ID -o $NAME 
+ffmpeg -i $NAME.ogv $NAME.gif
+
+mkdir --parents $HP/$NAME
+mv $HOME/$NAME.ogv $HP/$NAME
+mv $HOME/$NAME.gif $HP/$NAME
